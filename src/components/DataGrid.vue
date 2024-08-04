@@ -40,6 +40,7 @@ export default defineComponent({
     // components: {
     //     PageBar
     // },
+    emits: ['maintain', 'refresh'],
     props: {
         columns: {
             type: Array<any>,
@@ -48,47 +49,46 @@ export default defineComponent({
     },
 
     computed: {
-        ...mapStores(GridStore),
+        // ...mapStores(GridStore),
         ...mapState(GridStore, ['pageData', 'pageableUIParams']),
         page: {
             get() {
-                return this.pageData.page
+                return GridStore().pageData.page
             },
             set(value: number) {
-                this.setPageNum(value)
+                GridStore().setPageNum(value)
             }
         },
         pageSize: {
             get() {
-                return this.pageData.pageSize
+                return GridStore().pageData.pageSize
             },
             set(value: number) {
-                this.setPageSize(value)
+                GridStore().setPageSize(value)
             }
         }
     },
     methods: {
-        ...mapActions(GridStore, [
-            'setPageableUIParams', 'setPageableUIRows', 'setPageableUISidx', 'setPageableUISord', 'setPageableUIPage', 'setPageData', 'setPageNum', 'setTotalNum'
-        ]),
+        // ...mapActions(GridStore, [
+        //     'setPageableUIParams', 'setPageableUIRows', 'setPageableUISidx', 'setPageableUISord', 'setPageableUIPage', 'setPageData', 'setPageNum', 'setTotalNum'
+        // ]),
         handleEdit(row: any) {
             this.$emit('maintain', row)
         },
         changeSort(data: { column: any, prop: string, order: any }) {
             const sidx = data.order == null ? '' : (data.order === 'ascending' ? 'ASC' : 'DESC')
-            // const sord = data.order == null ? '' : data.prop
-            this.setPageableUISidx(sidx)
-            this.setPageableUISord(data.prop)
+            GridStore().setPageableUISidx(sidx)
+            GridStore().setPageableUISord(data.prop)
             this.$emit('refresh')
         },
         handleSizeChange(size: number) {
-            this.setPageableUIPage(1)
-            this.setPageableUIRows(size)
+            GridStore().setPageableUIPage(1)
+            GridStore().setPageableUIRows(size)
             this.$emit('refresh')
         },
         handleCurrentChange(page: number) {
             // this.currentPage = page; // 觸發computed
-            this.setPageableUIPage(page)
+            GridStore().setPageableUIPage(page)
             this.$emit('refresh')
         }
     }

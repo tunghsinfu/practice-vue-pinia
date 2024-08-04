@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <form-table-input-text v-if="item.type === 'text'" :label="item.label" />
-    <form-table-input-select v-if="item.type === 'select'" :label="item.label" :options="item.options" :defaultValue="item.defaultValue"
-      v-model="selectValue" />
-  </div>
+  <form-table-input-text v-if="item.type === 'text'" :field-item="item" v-model="fieldValue" />
+  <form-table-input-select v-else-if="item.type === 'select'" :field-item="item" v-model="fieldValue" />
 </template>
 
 <script lang="ts">
@@ -29,11 +26,11 @@ export default defineComponent({
   },
   data() {
     return {
-      selectValue: String
+      fieldValue: String
     }
   },
   watch: {
-    selectValue(newValue) {
+    fieldValue(newValue) {
       this.$emit('update:modelValue', newValue)
     }
   }

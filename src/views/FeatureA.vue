@@ -1,57 +1,52 @@
 <template>
-  <main>
-    <form-table :table-data="tableData" v-model="formData">
-      <template #buttonRow>
-        <!-- <button type="button" @click="query">Query</button> -->
-        <div id="Query_button" class="iconButtonOffWithBorder" nowrap="nowrap" valign="top">
-          &nbsp;Query&nbsp;
-        </div>
-      </template>
-    </form-table>
+  <form-table :table-data="tableData" v-model="formData">
+    <template #buttonRow>
+      <div @click="query" class="queryButton iconButtonOffWithBorder" nowrap="nowrap" valign="top">
+        &nbsp;Query&nbsp;
+      </div>
+    </template>
+  </form-table>
 
-    <DataGrid :columns="gridColumns" @refresh="query" @maintain="edit" />
-
-  </main>
+  <data-grid :columns="gridColumns" @refresh="query" @maintain="edit" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import FormTable from '@/components/FormTable.vue'
 import DataGrid from '@/components/DataGrid.vue'
-import { fetchOptionsFromEndpoint1, fetchOptionsFromEndpoint2 } from '../service/FeatureAService'
+import { fetchOptionsFromEndpoint1, fetchOptionsFromEndpoint2 } from '@/service/FeatureAService'
 import type GridColumn from '@/type/GridColumn'
+import { FeatureAStore } from '@/stores/FeatureAStore'
+import { createFormTableRow, type FormTableRow, type FormTableSelectField } from '@/type/FormTableItem'
+
 
 export default defineComponent({
   name: 'FeatureA',
-  components: {
-    FormTable
-  },
   data() {
     return {
       featureTitle: 'Feature A Title',
       tableData: [] as Array<Object>,
       formData: {} as Object,
       gridColumns: [
-        { prop: 'PROJECT_NAME', label: 'Project Name' },
-        { prop: 'PROJECT_CODE', label: 'Project Code' },
-        { prop: 'MARKETING_NAME', label: 'Sub Brand' },
-        { prop: 'BOM_NAME', label: 'BOM Name' },
-        { prop: 'BOM_STATUS', label: 'BOM Status' },
-        { prop: 'PM', label: 'PM' },
-        { prop: 'ODM', label: 'ODM' },
-        { prop: 'BOM_ITEM_ID', label: 'Bom Item ID' }
+        { prop: 'COLUMN_A', label: 'Column A' },
+        { prop: 'COLUMN_B', label: 'Column B' },
+        { prop: 'COLUMN_C', label: 'Column C' },
+        { prop: 'COLUMN_D', label: 'Column D' },
+        { prop: 'COLUMN_E', label: 'Column E' },
+        { prop: 'COLUMN_F', label: 'Column F' },
+        { prop: 'COLUMN_G', label: 'Column G' }
       ] as Array<GridColumn>
     }
   },
-  watch: {
-    // queryButtonClass: {
-    //   handler(newValue, oldValue) {
-    //     console.log(newValue)
-    //   },
-    //   immediate: true,
-    //   deep: true
-    // }
-  },
+  // watch: {
+  //   GridStore: {
+  //     handler(newValue, oldValue) {
+  //       console.log(newValue)
+  //     },
+  //     immediate: true,
+  //     deep: true
+  //   }
+  // },
   async mounted() {
     this.tableData = await this.fetchTableData();
   },
@@ -59,34 +54,36 @@ export default defineComponent({
     async fetchTableData() {
       const optionA = await fetchOptionsFromEndpoint1()
       const optionB = await fetchOptionsFromEndpoint2()
-      const rows = [
-        {
-          items: [
-            { type: 'text', name: 'fieldA', label: 'Text Input 1A' },
-            { type: 'select', name: 'fieldB', label: 'Select Input 1A', options: optionA, defaultValue: 'option2' },
-            { type: 'text', name: 'fieldC', label: 'Text Input 1B' },
-            { type: 'select', name: 'fieldD', label: 'Select Input 1B', options: optionB }
-          ]
-        },
-        {
-          items: [
-            { type: 'text', name: 'fieldE', label: 'Text Input 2A' },
-            { type: 'select', name: 'fieldF', label: 'Select Input 2A', options: optionA },
-            { type: 'text', name: 'fieldG', label: 'Text Input 2B' }
-          ]
-        }
-      ]
+      const rows = []
+      rows.push(createFormTableRow([
+        { type: 'text', name: 'fieldA', label: 'Text Input 1A' },
+        { type: 'select', name: 'fieldB', label: 'Select Input 1A', options: optionA, defaultValue: 'option2' } as FormTableSelectField,
+        { type: 'text', name: 'fieldC', label: 'Text Input 1B' },
+        { type: 'select', name: 'fieldD', label: 'Select Input 1B', options: optionB } as FormTableSelectField
+      ]));
+      rows.push(createFormTableRow([
+        { type: 'text', name: 'fieldE', label: 'Text Input 2A' },
+        { type: 'select', name: 'fieldF', label: 'Select Input 2A', options: optionA } as FormTableSelectField,
+        { type: 'text', name: 'fieldG', label: 'Text Input 2B' }
+      ]));
       return rows
     },
     async query() {
-      // await this.findItems(this.formData)
+      const featureAStore = FeatureAStore()
+      await featureAStore.findItems(this.formData)
     },
     edit(row: any) {
       const params = {
-        dataId: row.id,
+        // dataId: row.COLUMN_A,
+        ...row,
         ...this.formData
       }
-      // this.$router.push({ name: 'detail', query: params })
+      // console.log(JSON.stringify(params))
+
+      // this.$router.push({ name: 'feature-a-maintain', params: { username: 'eduardo' } })
+      // this.$router.push({ name: 'feature-a-maintain', params: { oops: 'gets removed' } })
+
+      this.$router.push({ name: 'feature-a-maintain', query: params })
     },
   }
 });
@@ -94,7 +91,7 @@ export default defineComponent({
 
 
 <style scoped>
-#Query_button {
+.queryButton {
   height: 19px;
   width: 50px;
   overflow: hidden;

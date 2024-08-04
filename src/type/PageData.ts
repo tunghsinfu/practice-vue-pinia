@@ -1,11 +1,11 @@
 export interface PageData {
-  total: number;
-  previousPage: number;
-  firstPage: number;
-  lastPage: number;
   records: number;
-  nextPage: number;
   pageSize: number;
   page: number;
-  rows: any[] | null;
+  rows: Array<any> | null;
+  total?: number;
+  previousPage?: number;
+  firstPage?: number;
+  lastPage?: number;
+  nextPage?: number;
 }

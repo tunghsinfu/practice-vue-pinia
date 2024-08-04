@@ -40,7 +40,7 @@ export default defineComponent({
   },
   data() {
     return {
-      formData: {}
+      formData: {} as any
     }
   },
   watch: {
@@ -69,6 +69,10 @@ export default defineComponent({
         colspan = (maxRowLength - this.tableData[rowIndex].items.length) * 2 + colspan
       }
       return colspan
+    },
+    getItems(row: any) {
+      // 檢查 row 是否有 items 屬性，若有則返回 items，否則返回 row 自身
+      return row.items || row;
     }
   }
 })

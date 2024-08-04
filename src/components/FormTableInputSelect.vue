@@ -1,10 +1,10 @@
 <template>
   <td align="right">
-    {{ label }}
+    {{ fieldItem.label }}
   </td>
   <td>
-    <select @change="changeSelect" v-model="selectValue">
-      <option v-for="(option, index) in options" :value="option.value" :key="index">
+    <select v-model="selectValue">
+      <option v-for="(option, index) in fieldItem.options" :value="option.value" :key="index">
         {{ option.label }}
       </option>
     </select>
@@ -17,16 +17,9 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'FormTableInputSelect',
   props: {
-    label: {
-      type: String,
+    fieldItem: {
+      type: Object,
       required: true
-    },
-    options: {
-      type: Array<any>,
-      required: true
-    },
-    defaultValue: {
-      type: String
     },
     modelValue: {
       type: undefined,
@@ -39,7 +32,7 @@ export default defineComponent({
     }
   },
   created() {
-    this.selectValue = this.defaultValue != null ? this.defaultValue : this.options[0].value
+    this.selectValue = this.fieldItem.defaultValue != null ? this.fieldItem.defaultValue : this.fieldItem.options[0].value
   },
   watch: {
     selectValue(newValue) {

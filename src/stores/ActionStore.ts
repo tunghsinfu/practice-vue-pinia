@@ -1,35 +1,35 @@
-import { ActionResult } from '@/type/ActionResult'
-/* eslint-disable */
-const ActionStore = {
-    namespaced: true,
+import { defineStore } from 'pinia'
+import type { ActionResult } from '@/type/ActionResult'
+
+export const ActionStore = defineStore('action', {
     state: () => ({
         actionResult: {
             message: '' as string,
             messageType: '' as string
         } as ActionResult,
-        loading: undefined
+        loading: false as Boolean
     }),
-    mutations: {
-        setActionResult (state: any, actionResult: ActionResult) {
-            state.actionResult = actionResult
-        },
-        setLoading(state: any, data: any) {
-            state.loading = data
-        },
-    },
+    // mutations: {
+    //     setActionResult(state: any, actionResult: ActionResult) {
+    //         state.actionResult = actionResult
+    //     },
+    //     setLoading(state: any, data: any) {
+    //         state.loading = data
+    //     },
+    // },
     actions: {
-        clearMessage ({ commit }) {
-            commit('setActionResult', { message: '', messageType: '' })
+        setResult(result: ActionResult) {
+            this.actionResult = result
         },
-        openLoading({ commit }) {
-            // ElLoading.service({ fullscreen: true })
-            commit('setLoading', true)
+        clearMessage() {
+            const result: ActionResult = { message: '', messageType: '' }
+            this.actionResult = result
         },
-        closeLoading({ commit, state }) {
-            commit('setLoading', false)
-            // state.loading.close()
+        openLoading() {
+            this.loading = true
+        },
+        closeLoading() {
+            this.loading = false
         }
     }
-}
-
-export default ActionStore
+})

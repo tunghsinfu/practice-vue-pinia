@@ -1,8 +1,11 @@
 <template>
   <feature-header :title="featureTitle" />
-  <router-view v-slot="{ Component }">
-    <component :is="Component" ref="currentComponent" @hook:mounted="updateTitle"></component>
-  </router-view>
+  <main>
+    <router-view v-slot="{ Component }">
+      <!-- <component :is="Component" ref="currentComponent" @hook:mounted="updateTitle"></component> -->
+      <component :is="Component" ref="currentComponent"></component>
+    </router-view>
+  </main>
 </template>
 
 <script lang="ts">

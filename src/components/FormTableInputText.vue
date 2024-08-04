@@ -1,9 +1,9 @@
 <template>
   <td align="right">
-    {{ label }}
+    {{ fieldItem.label }}
   </td>
   <td>
-    <input type="text">
+    <input type="text" v-model="textValue">
   </td>
 </template>
 
@@ -13,10 +13,28 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'FormTableInputText',
   props: {
-    label: {
-      type: String,
+    fieldItem: {
+      type: Object,
+      required: true
+    },
+    modelValue: {
+      type: undefined,
       required: true
     }
+  },
+  data() {
+    return {
+      textValue: String
+    }
+  },
+  created() {
+    this.textValue = this.fieldItem.defaultValue != null ? this.fieldItem.defaultValue : ''
+  },
+  watch: {
+    textValue(newValue) {
+      this.$emit('update:modelValue', newValue)
+    }
   }
+
 })
 </script>

@@ -1,5 +1,4 @@
 <template>
-  Maintain
   <form-table :table-data="tableData" v-model="formData">
     <template #buttonRow>
       <button @click="submit">submit</button>
@@ -26,8 +25,8 @@ export default defineComponent({
     const routeQuery = this.$route.query
     this.tableData.push(createFormTableRow([
       { type: 'text', name: 'COLUMN_A', label: 'Column A', defaultValue: routeQuery.COLUMN_A as string },
-      { type: 'text', name: 'COLUMN_B', label: 'Column B' },
-      { type: 'text', name: 'COLUMN_C', label: 'Column C' }]))
+      { type: 'text', name: 'COLUMN_B', label: 'Column B', defaultValue: routeQuery.COLUMN_B as string },
+      { type: 'text', name: 'COLUMN_C', label: 'Column C', defaultValue: routeQuery.COLUMN_C as string }]))
     this.tableData.push(createFormTableRow([
       { type: 'text', name: 'COLUMN_D', label: 'Column D' },
       { type: 'text', name: 'COLUMN_E', label: 'Column E' },

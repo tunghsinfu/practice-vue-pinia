@@ -14,6 +14,7 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     FeatureHeader: typeof import('./src/components/FeatureHeader.vue')['default']
+    FeaturePage: typeof import('./src/components/FeaturePage.vue')['default']
     FormTable: typeof import('./src/components/FormTable.vue')['default']
     FormTableInput: typeof import('./src/components/FormTableInput.vue')['default']
     FormTableInputSelect: typeof import('./src/components/FormTableInputSelect.vue')['default']

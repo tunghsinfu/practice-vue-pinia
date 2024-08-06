@@ -25,7 +25,7 @@ export default defineComponent({
   data() {
     return {
       featureTitle: 'Feature A Title',
-      tableData: [] as Array<Object>,
+      tableData: [] as Array<FormTableRow>,
       formData: {} as Object,
       gridColumns: [
         { prop: 'COLUMN_A', label: 'Column A' },

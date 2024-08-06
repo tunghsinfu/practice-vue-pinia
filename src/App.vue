@@ -24,22 +24,31 @@ export default defineComponent({
     FeatureHeader
   },
   watch: {
-    $route() {
-      this.updateTitle();
+    // $route() {
+    //   this.updateTitle();
+    // }
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        console.log('to.meta.title=' + to.meta.title)
+        this.featureTitle = to.meta.title
+        // document.title = to.meta.title || 'Some Default Title';
+
+      }
     }
   },
   methods: {
-    updateTitle() {
-      this.$nextTick(() => {
-        const componentInstance: any = this.$refs.currentComponent;
-        if (componentInstance && componentInstance.featureTitle) {
-          this.featureTitle = componentInstance.featureTitle;
-        }
-      });
-    }
+    // updateTitle() {
+    //   this.$nextTick(() => {
+    //     const componentInstance: any = this.$refs.currentComponent;
+    //     if (componentInstance && componentInstance.featureTitle) {
+    //       this.featureTitle = componentInstance.featureTitle;
+    //     }
+    //   });
+    // }
   },
   mounted() {
-    this.updateTitle();
+    // this.updateTitle();
   }
 })
 </script>

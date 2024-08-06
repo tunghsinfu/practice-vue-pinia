@@ -9,15 +9,26 @@ const router = createRouter({
     {
       path: '/feature_a',
       name: 'featureA',
-      component: FeatureA
+      component: FeatureA,
+      meta: { title: 'Feature A Title' },
+      children: [{
+        path: '/maintain',
+        name: 'feature-a-maintain',
+        component: FeatureAMaintain
+      }],
+
     },
-    {
-      path: '/feature_a/maintain',
-      name: 'feature-a-maintain',
-      component: FeatureAMaintain,
-      // children: [{ path: '', name: 'user', component: UserHome }],
-    },
+    // {
+    //   path: '/feature_a/maintain',
+    //   name: 'feature-a-maintain',
+    //   component: FeatureAMaintain,
+    //   // children: [{ path: '', name: 'user', component: UserHome }],
+    // },
   ]
+})
+
+router.afterEach((to, from) => {
+
 })
 
 export default router

@@ -1,4 +1,5 @@
 <template>
+  <!-- <component :is="Component" ref="currentComponent"></component> -->
   <form-table-input-text v-if="item.type === 'text'" :field-item="item" v-model="fieldValue" />
   <form-table-input-select v-else-if="item.type === 'select'" :field-item="item" v-model="fieldValue" />
 </template>

@@ -1,27 +1,32 @@
 <template>
-  <form-table :table-data="tableData" v-model="formData">
-    <template #buttonRow>
-      <button @click="submit">submit</button>
-    </template>
-  </form-table>
+  <feature-page>
+    <form-table :table-data="tableData" v-model="formData">
+      <template #buttonRow>
+        <button @click="submit">submit</button>
+      </template>
+    </form-table>
+  </feature-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import FeaturePage from '@/components/FeaturePage.vue'
 import FormTable from '@/components/FormTable.vue'
 import { createFormTableRow } from '@/type/FormTableItem'
 
 export default defineComponent({
   name: 'FeatureAMaintain',
+  components: {
+    FeaturePage, FormTable
+  },
   data() {
     return {
-      // tableData: [] as Array<Object>,
       formData: {} as Object,
-      tableData: [] as Array<Object>,
-      // featureTitle: 'Feature A Title'
+      tableData: [] as Array<Object>
     }
   },
   mounted() {
+    // Get value from Route query
     const routeQuery = this.$route.query
     this.tableData.push(createFormTableRow([
       { type: 'text', name: 'COLUMN_A', label: 'Column A', defaultValue: routeQuery.COLUMN_A as string },

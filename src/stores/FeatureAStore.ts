@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
 import { queryData } from '../service/FeatureAService'
 import type { PageData } from '@/type/PageData'
-import { GridStore } from './GridStore'
-import { ActionStore } from './ActionStore'
+import { useGridStore } from './GridStore'
+
+// import { ActionStore } from './ActionStore'
+// import { ActionStore } from '@/stores/ActionStore'
+
+import { useFeaturePageStore } from '@/stores/FeaturePageStore'
 
 
 export const FeatureAStore = defineStore('feature-a', {
@@ -12,7 +16,7 @@ export const FeatureAStore = defineStore('feature-a', {
   actions: {
     async findItems(formData: any) {
       console.log('findItems')
-      const gridStore = GridStore()
+      const gridStore = useGridStore()
 
       const params = {
         ...formData,
@@ -23,13 +27,17 @@ export const FeatureAStore = defineStore('feature-a', {
         if (res) {
           const pageData: PageData = res.data
           gridStore.setPageData(pageData)
+
+          const store = useFeaturePageStore()
+          store.setResult({ message: 'success', messageType: 'success' })
         }
       }).catch((error) => {
-        const actionStore = ActionStore()
+        // const actionStore = ActionStore()
+        const store = useFeaturePageStore()
         if (error.response && error.response.data) {
-          actionStore.setResult({ message: error.response.data, messageType: 'fail' })
+          store.setResult({ message: error.response.data, messageType: 'fail' })
         } else {
-          actionStore.setResult({ message: 'Failed to load query result.', messageType: 'fail' })
+          store.setResult({ message: 'Failed to load query result.', messageType: 'fail' })
         }
       })
     }

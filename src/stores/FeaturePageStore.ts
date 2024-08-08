@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import type { ActionResult } from '@/type/ActionResult'
 
-export const FeaturePageStore = defineStore('feature-page', {
+export const useFeaturePageStore = defineStore('feature-page', {
     state: () => ({
+        pageTitle: '' as string,
         actionResult: {
             message: '' as string,
             messageType: '' as string
@@ -10,6 +11,9 @@ export const FeaturePageStore = defineStore('feature-page', {
         loading: false as Boolean
     }),
     actions: {
+        setPageTitle(title: string) {
+            this.pageTitle = title
+        },
         setResult(result: ActionResult) {
             this.actionResult = result
         },

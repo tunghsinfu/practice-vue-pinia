@@ -17,9 +17,16 @@
             </template>
         </el-table-column>
 
-        <el-table-column v-for="column in columns" :label="column.label" :prop="column.prop"
-            :key="column.key !== undefined ? column.key : column.prop"
-            :sortable="column.sortable !== undefined ? column.sortable : true" />
+        <template v-for="column in columns">
+            <template v-if="$slots[column.id]">
+                <slot :name="column.id"></slot>
+            </template>
+            <template v-else>
+                <el-table-column v-for="column in columns" :label="column.label" :prop="column.prop"
+                :key="column.key !== undefined ? column.key : column.prop"
+                :sortable="column.sortable !== undefined ? column.sortable : true" />
+            </template>
+        </template>
 
     </el-table>
     <!-- </div> -->
@@ -31,7 +38,7 @@ import { mapStores, mapState, mapActions } from 'pinia'
 
 // import router from '@/router/index'
 
-import { GridStore } from '@/stores/GridStore'
+import { useGridStore } from '@/stores/GridStore'
 
 
 export default defineComponent({
@@ -45,26 +52,30 @@ export default defineComponent({
         columns: {
             type: Array<any>,
             required: true
-        }
+        },
+        // gridId: {
+        //     type: String,
+        //     required: true
+        // }
     },
 
     computed: {
         // ...mapStores(GridStore),
-        ...mapState(GridStore, ['pageData', 'pageableUIParams']),
+        ...mapState(useGridStore, ['pageData', 'pageableUIParams']),
         page: {
             get() {
-                return GridStore().pageData.page
+                return useGridStore().pageData.page
             },
             set(value: number) {
-                GridStore().setPageNum(value)
+                useGridStore().setPageNum(value)
             }
         },
         pageSize: {
             get() {
-                return GridStore().pageData.pageSize
+                return useGridStore().pageData.pageSize
             },
             set(value: number) {
-                GridStore().setPageSize(value)
+                useGridStore().setPageSize(value)
             }
         }
     },
@@ -77,18 +88,18 @@ export default defineComponent({
         },
         changeSort(data: { column: any, prop: string, order: any }) {
             const sidx = data.order == null ? '' : (data.order === 'ascending' ? 'ASC' : 'DESC')
-            GridStore().setPageableUISidx(sidx)
-            GridStore().setPageableUISord(data.prop)
+            useGridStore().setPageableUISidx(sidx)
+            useGridStore().setPageableUISord(data.prop)
             this.$emit('refresh')
         },
         handleSizeChange(size: number) {
-            GridStore().setPageableUIPage(1)
-            GridStore().setPageableUIRows(size)
+            useGridStore().setPageableUIPage(1)
+            useGridStore().setPageableUIRows(size)
             this.$emit('refresh')
         },
         handleCurrentChange(page: number) {
             // this.currentPage = page; // 觸發computed
-            GridStore().setPageableUIPage(page)
+            useGridStore().setPageableUIPage(page)
             this.$emit('refresh')
         }
     }
